@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use SILICA, please cite the paper."
+title: "SILICA: Certified Counterfactual Evaluation of Identifiability in Unseen-Language Induction"
+type: software
+authors:
+  - family-names: Xu
+    given-names: Pengcheng
+  - family-names: Guan
+    given-names: Xinyu
+repository-code: "https://github.com/TO-CONFIRM/silica"
+license: Apache-2.0
+keywords:
+  - benchmark
+  - identifiability
+  - abstention
+  - language-model evaluation
+preferred-citation:
+  type: conference-paper
+  title: "SILICA: Certified Counterfactual Evaluation of Identifiability in Unseen-Language Induction"
+  authors:
+    - family-names: Xu
+      given-names: Pengcheng
+    - family-names: Guan
+      given-names: Xinyu
+  collection-title: "Findings of the Association for Computational Linguistics: EACL 2027"
+  publisher:
+    name: Association for Computational Linguistics
+  year: 2027

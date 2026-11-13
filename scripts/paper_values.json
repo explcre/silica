@@ -1,0 +1,661 @@
+{
+  "source": "SILICA: Certified Counterfactual Evaluation of Identifiability in Unseen-Language Induction (Findings of EACL 2027), camera-ready text. LaTeX markup is normalized: minus and en dashes are '-', thin spaces are removed, and daggers and asterisks on labels are dropped or kept as '*'.",
+  "tables": {
+    "model_panel": {
+      "title": "Table 9. Sealed common-cohort panel (1,536 rows)",
+      "columns": [
+        "Valid",
+        "AR",
+        "FCR",
+        "AR-FCR",
+        "UR",
+        "CPA",
+        "BDA",
+        "BJA",
+        "BJA 95% CI",
+        "<8>"
+      ],
+      "rows": {
+        "qwen25-05b": {
+          "label": "Qwen2.5-0.5B",
+          "values": [
+            ".423",
+            ".426",
+            ".418",
+            "+.008",
+            ".001",
+            ".471",
+            ".214",
+            ".101",
+            "[.090, .112]",
+            ".000"
+          ]
+        },
+        "qwen25-15b": {
+          "label": "Qwen2.5-1.5B",
+          "values": [
+            ".030",
+            ".026",
+            ".034",
+            "-.008",
+            ".000",
+            ".450",
+            ".013",
+            ".006",
+            "[.003, .009]",
+            ".000"
+          ]
+        },
+        "smollm2-17b": {
+          "label": "SmolLM2-1.7B",
+          "values": [
+            ".730",
+            ".738",
+            ".721",
+            "+.017",
+            ".000",
+            ".429",
+            ".369",
+            ".158",
+            "[.146, .170]",
+            ".000"
+          ]
+        },
+        "qwen25-3b": {
+          "label": "Qwen2.5-3B",
+          "values": [
+            "1.000",
+            ".995",
+            ".997",
+            "-.003",
+            ".003",
+            ".497",
+            ".499",
+            ".249",
+            "[.244, .253]",
+            ".000"
+          ]
+        },
+        "phi35-mini": {
+          "label": "Phi-3.5-mini",
+          "values": [
+            ".000",
+            ".000",
+            ".000",
+            "+.000",
+            ".000",
+            "---",
+            ".000",
+            ".000",
+            "[.000, .000]",
+            ".000"
+          ]
+        },
+        "qwen25-7b": {
+          "label": "Qwen2.5-7B",
+          "values": [
+            "1.000",
+            "1.000",
+            "1.000",
+            "+.000",
+            ".000",
+            ".497",
+            ".500",
+            ".249",
+            "[.244, .253]",
+            ".000"
+          ]
+        },
+        "qwen25-14b": {
+          "label": "Qwen2.5-14B",
+          "values": [
+            ".983",
+            ".443",
+            ".453",
+            "-.010",
+            ".531",
+            ".497",
+            ".487",
+            ".376",
+            "[.360, .391]",
+            ".000"
+          ]
+        },
+        "qwen25-32b": {
+          "label": "Qwen2.5-32B",
+          "values": [
+            "1.000",
+            ".030",
+            ".025",
+            "+.005",
+            ".975",
+            ".522",
+            ".503",
+            ".495",
+            "[.491, .499]",
+            ".000"
+          ]
+        },
+        "always-answer": {
+          "label": "always-ANSWER",
+          "values": [
+            "1.000",
+            "1.000",
+            "1.000",
+            "+.000",
+            ".000",
+            ".500",
+            ".500",
+            ".250",
+            null,
+            ".000"
+          ]
+        },
+        "always-abstain": {
+          "label": "always-ABSTAIN",
+          "values": [
+            "1.000",
+            ".000",
+            ".000",
+            "+.000",
+            "1.000",
+            "---",
+            ".500",
+            ".500",
+            null,
+            ".000"
+          ]
+        },
+        "exact-oracle": {
+          "label": "exact oracle",
+          "values": [
+            "1.000",
+            "1.000",
+            ".000",
+            "+1.000",
+            "1.000",
+            "1.000",
+            "1.000",
+            "1.000",
+            null,
+            "1.000"
+          ]
+        }
+      }
+    },
+    "matched_controls": {
+      "title": "Table 3. Matched controls (1,536 rows each)",
+      "columns": [
+        "Valid",
+        "AR-FCR",
+        "CPA",
+        "BJA",
+        "<8>",
+        "Tok."
+      ],
+      "rows": {
+        "qwen3-235b-trace-off": {
+          "label": "Qwen3-235B-A22B trace off",
+          "values": [
+            "1.000",
+            "-.005",
+            ".489",
+            ".408",
+            "0/192",
+            "13"
+          ]
+        },
+        "qwen3-235b-trace-on": {
+          "label": "Qwen3-235B-A22B trace on",
+          "values": [
+            "1.000",
+            "+.431",
+            ".878",
+            ".671",
+            "11/192",
+            "5,427"
+          ]
+        },
+        "qwen3-17b-trace-off": {
+          "label": "Qwen3-1.7B trace off",
+          "values": [
+            ".987",
+            "-.001",
+            ".449",
+            ".224",
+            "0/192",
+            "19"
+          ]
+        },
+        "qwen3-17b-trace-on": {
+          "label": "Qwen3-1.7B trace on",
+          "values": [
+            ".950",
+            "+.029",
+            ".447",
+            ".279",
+            "0/192",
+            "3,868"
+          ]
+        },
+        "qwen35-2b-greedy": {
+          "label": "Qwen3.5-2B greedy",
+          "values": [
+            "1.000",
+            "+.000",
+            ".487",
+            ".243",
+            "0/192",
+            "20"
+          ]
+        },
+        "qwen35-2b-stochastic": {
+          "label": "Qwen3.5-2B stochastic",
+          "values": [
+            "1.000",
+            "+.000",
+            ".435",
+            ".217",
+            "0/192",
+            "18"
+          ]
+        },
+        "qwen25-14b-ablation-verbatim": {
+          "label": "Qwen2.5-14B silent*",
+          "values": [
+            ".990",
+            "+.004",
+            ".503",
+            ".382",
+            "0/192",
+            "18"
+          ]
+        },
+        "qwen25-14b-ablation-scratchpad": {
+          "label": "Qwen2.5-14B scratchpad",
+          "values": [
+            ".984",
+            "-.007",
+            ".496",
+            ".307",
+            "0/192",
+            "697"
+          ]
+        },
+        "qwen25-32b-ablation-verbatim": {
+          "label": "Qwen2.5-32B silent*",
+          "values": [
+            "1.000",
+            "+.003",
+            ".526",
+            ".495",
+            "0/192",
+            "14"
+          ]
+        },
+        "qwen25-32b-ablation-scratchpad": {
+          "label": "Qwen2.5-32B scratchpad",
+          "values": [
+            ".961",
+            "+.009",
+            ".485",
+            ".264",
+            "0/192",
+            "832"
+          ]
+        }
+      }
+    },
+    "prompt_ablations": {
+      "title": "Table 8. Prompt ablations on Qwen2.5-14B (1,536 rows each)",
+      "columns": [
+        "Valid",
+        "AR",
+        "AR-FCR",
+        "CPA",
+        "BJA",
+        "Tok."
+      ],
+      "rows": {
+        "qwen25-14b-ablation-verbatim": {
+          "label": "verbatim",
+          "values": [
+            ".990",
+            ".466",
+            "+.004",
+            ".503",
+            ".382",
+            "18"
+          ]
+        },
+        "qwen25-14b-ablation-scratchpad": {
+          "label": "scratchpad",
+          "values": [
+            ".984",
+            ".730",
+            "-.007",
+            ".496",
+            ".307",
+            "697"
+          ]
+        },
+        "qwen25-14b-ablation-lean": {
+          "label": "lean",
+          "values": [
+            "1.000",
+            ".203",
+            "-.005",
+            ".513",
+            ".448",
+            "18"
+          ]
+        },
+        "qwen25-14b-ablation-compact_rule": {
+          "label": "compact_rule",
+          "values": [
+            ".998",
+            ".085",
+            "+.003",
+            ".446",
+            ".477",
+            "13"
+          ]
+        }
+      }
+    }
+  },
+  "numbers": {
+    "panel.decision_signal_range": {
+      "value": "[-.010, +.017]",
+      "where": "Section 6.2"
+    },
+    "panel.max_balanced_decision_accuracy": {
+      "value": ".503",
+      "where": "Section 6.2"
+    },
+    "panel.conditional_payload_accuracy_range": {
+      "value": ".429-.522",
+      "where": "Section 6.2"
+    },
+    "panel.format_valid_conditions": {
+      "value": "4",
+      "where": "Section 6.2"
+    },
+    "panel.format_valid_conditional_payload_accuracy_range": {
+      "value": ".497-.522",
+      "where": "Section 6.2"
+    },
+    "panel.max_complete_route_groups": {
+      "value": "0/192",
+      "where": "Section 6.2"
+    },
+    "panel.same_state_pairs_above_coin_level": {
+      "value": "qwen25-32b",
+      "where": "Section 6.2"
+    },
+    "qwen25-32b.same_state_pairs": {
+      "value": "23/768",
+      "where": "Section 6.2"
+    },
+    "qwen25-32b.same_state_pair_rate": {
+      "value": ".030",
+      "where": "Section 6.2"
+    },
+    "qwen25-32b.same_state_coin_level": {
+      "value": ".027",
+      "where": "Section 6.2"
+    },
+    "panel.conditions_with_four_cell_patterns": {
+      "value": "qwen25-14b",
+      "where": "Section 6.2"
+    },
+    "qwen25-14b.four_cell_patterns": {
+      "value": "5/384",
+      "where": "Section 6.2"
+    },
+    "qwen25-14b.four_cell_guessing_level": {
+      "value": ".061",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.request_success": {
+      "value": "1.000",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.format_valid": {
+      "value": "1.000",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.decision_signal": {
+      "value": ".431",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.conditional_payload_accuracy": {
+      "value": ".878",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.balanced_strict_joint_accuracy": {
+      "value": ".671",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.balanced_strict_joint_accuracy_ci": {
+      "value": "[.645, .697]",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.same_state_pair_decision": {
+      "value": ".518",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.same_state_independent_level": {
+      "value": ".512",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.complete_route_groups": {
+      "value": "11/192",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.unsolved_route_groups": {
+      "value": "181/192",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.unsolved_share": {
+      "value": "94%",
+      "where": "Abstract"
+    },
+    "qwen3-235b-trace-on.mean_tokens": {
+      "value": "5,427",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-off.decision_signal": {
+      "value": "-.005",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-off.conditional_payload_accuracy": {
+      "value": ".489",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-off.complete_route_groups": {
+      "value": "0/192",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-off.mean_tokens": {
+      "value": "13",
+      "where": "Section 6.2"
+    },
+    "qwen3-17b-trace-on.mean_tokens": {
+      "value": "3,868",
+      "where": "Section 6.2"
+    },
+    "qwen3-17b-trace-on.decision_signal": {
+      "value": "+.029",
+      "where": "Section 6.2"
+    },
+    "qwen3-17b-trace-on.conditional_payload_accuracy": {
+      "value": ".447",
+      "where": "Section 6.2"
+    },
+    "qwen3-17b-trace-on.complete_route_groups": {
+      "value": "0/192",
+      "where": "Section 6.2"
+    },
+    "qwen35-08b-trace-on.non_termination": {
+      "value": "28.8%",
+      "where": "Section 6.2"
+    },
+    "qwen35-2b-trace-on.non_termination": {
+      "value": "16.5%",
+      "where": "Section 6.2"
+    },
+    "qwen3-17b-trace-on.non_termination": {
+      "value": "4.4%",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.non_termination": {
+      "value": "0.0%",
+      "where": "Section 6.2"
+    },
+    "qwen35-08b-trace-on.format_valid_percent": {
+      "value": "32.8%",
+      "where": "Section 6.2"
+    },
+    "qwen35-2b-trace-on.format_valid_percent": {
+      "value": "48.5%",
+      "where": "Section 6.2"
+    },
+    "qwen3-17b-trace-on.format_valid_percent": {
+      "value": "95.0%",
+      "where": "Section 6.2"
+    },
+    "qwen3-235b-trace-on.format_valid_percent": {
+      "value": "100%",
+      "where": "Section 6.2"
+    },
+    "ablation.qwen25-14b.answerable_decision_recall_range": {
+      "value": ".085-.730",
+      "where": "Section 6.2"
+    },
+    "ablation.qwen25-32b.answerable_decision_recall_range": {
+      "value": ".010-.845",
+      "where": "Section 6.2"
+    },
+    "ablation.decision_signal_range": {
+      "value": "[-.007, +.013]",
+      "where": "Section 6.2"
+    },
+    "ablation.max_complete_route_groups": {
+      "value": "0/192",
+      "where": "Section 6.2"
+    },
+    "ablation.qwen25-14b.scratchpad_mean_tokens": {
+      "value": "697",
+      "where": "Section 6.2"
+    },
+    "ablation.qwen25-32b.scratchpad_mean_tokens": {
+      "value": "832",
+      "where": "Section 6.2"
+    },
+    "ablation.qwen25-14b.answerable_decision_recall_factor": {
+      "value": "8.6",
+      "where": "Appendix J"
+    },
+    "ablation.qwen25-14b.decision_signal_range": {
+      "value": "[-.007, +.004]",
+      "where": "Appendix J"
+    },
+    "ablation.qwen25-14b.balanced_strict_joint_accuracy_verbatim_to_scratchpad": {
+      "value": ".382 to .307",
+      "where": "Appendix J"
+    },
+    "ablation.qwen25-32b.answerable_decision_recall": {
+      "value": ".025, .845, .146, .010",
+      "where": "Appendix J"
+    },
+    "ablation.qwen25-32b.decision_signal": {
+      "value": "+.003, +.009, +.013, +.001",
+      "where": "Appendix J"
+    },
+    "ablation.qwen25-32b.balanced_strict_joint_accuracy_verbatim_to_scratchpad": {
+      "value": ".495 to .264",
+      "where": "Appendix J"
+    },
+    "ablation.qwen25-14b.verbatim_vs_sealed_max_abs_diff": {
+      "value": ".023",
+      "where": "Appendix J"
+    },
+    "ablation.qwen25-32b.verbatim_vs_sealed_max_abs_diff": {
+      "value": ".0052",
+      "where": "Appendix J"
+    },
+    "qwen25-14b-full.request_errors": {
+      "value": "0",
+      "where": "Section 6.2"
+    },
+    "qwen25-14b-full.decision_signal": {
+      "value": "-.001",
+      "where": "Section 6.2"
+    },
+    "qwen25-14b-full.conditional_payload_accuracy": {
+      "value": ".502",
+      "where": "Section 6.2"
+    },
+    "qwen25-14b-full.balanced_decision_accuracy": {
+      "value": ".495",
+      "where": "Section 6.2"
+    },
+    "qwen25-14b-full.balanced_strict_joint_accuracy": {
+      "value": ".379",
+      "where": "Section 6.2"
+    },
+    "qwen25-14b-full.balanced_strict_joint_accuracy_ci": {
+      "value": "[.372, .385]",
+      "where": "Section 6.2"
+    },
+    "qwen25-14b-full.complete_route_groups": {
+      "value": "0/1,536",
+      "where": "Section 6.2"
+    },
+    "qwen25-15b-replicate.row_metrics_vs_primary": {
+      "value": "identical",
+      "where": "Section 6.2"
+    },
+    "phi35-mini.end_of_turn_inside_scored_span": {
+      "value": "1,536/1,536",
+      "where": "Appendix F"
+    },
+    "phi35-mini.further_turn_after_end_of_turn": {
+      "value": "1,021 of 1,536",
+      "where": "Section 6.2"
+    },
+    "phi35-mini-multitoken-stop.format_valid": {
+      "value": "49/314",
+      "where": "Section 6.2"
+    },
+    "phi35-mini-multitoken-stop.length_capped": {
+      "value": "188",
+      "where": "Appendix F"
+    },
+    "phi35-mini-multitoken-stop.length_capped_share": {
+      "value": "60%",
+      "where": "Section 6.2"
+    },
+    "phi35-mini-multitoken-stop.stopped": {
+      "value": "126",
+      "where": "Appendix F"
+    },
+    "phi35-mini-multitoken-stop.stopped_invalid": {
+      "value": "77",
+      "where": "Appendix F"
+    },
+    "phi35-mini-multitoken-stop.stopped_invalid_prose": {
+      "value": "35",
+      "where": "Appendix F"
+    },
+    "phi35-mini-multitoken-stop.stopped_invalid_code_fence": {
+      "value": "13",
+      "where": "Appendix F"
+    },
+    "phi35-mini-multitoken-stop.stopped_invalid_bare_object": {
+      "value": "29",
+      "where": "Appendix F"
+    }
+  }
+}
