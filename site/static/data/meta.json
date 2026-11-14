@@ -1,0 +1,26 @@
+{
+ "title": "SILICA: Certified Counterfactual Evaluation of Identifiability in Unseen-Language Induction",
+ "venue": "Findings of EACL 2027",
+ "version": "1.0.0",
+ "licenses": {
+  "code": "Apache-2.0",
+  "data": "CC BY 4.0"
+ },
+ "bibtex": "@inproceedings{xu2027silica,\n  title     = {{SILICA}: Certified Counterfactual Evaluation of Identifiability in Unseen-Language Induction},\n  author    = {Xu, Pengcheng and Guan, Xinyu},\n  booktitle = {Findings of the Association for Computational Linguistics: EACL 2027},\n  year      = {2027},\n  publisher = {Association for Computational Linguistics}\n}",
+ "install": "pip install \"silica-bench @ git+https://github.com/explcre/silica\"",
+ "quickstart": "pip install huggingface_hub\nhf download ryan1025-x/silica --repo-type dataset --local-dir silica-data\n\n# checksums, every certificate recomputed, every row solved from its prompt\nsilica verify --dataset silica-data --output verify.json\n\n# the exact chat messages of the 1,536-row common cohort used in the paper\nsilica prompts --dataset silica-data --cohort common --output prompts.jsonl\n\n# run a model: any OpenAI-compatible endpoint, or your own harness\npython examples/openai_client.py --prompts prompts.jsonl --output predictions.jsonl \\\n    --base-url http://HOST:PORT/v1 --model MODEL\n\n# score the responses\nsilica evaluate --dataset silica-data --predictions predictions.jsonl --output report.json",
+ "reproduce": [
+  "python scripts/reproduce_paper.py --hf silica-data",
+  "silica generate --output regenerated   # byte-identical to the released files\nsilica verify --dataset silica-data\npython audits/cleanroom_oracle.py --dataset silica-data\nsilica audit shortcuts --dataset silica-data\nsilica audit probes --dataset silica-data      # needs the audit extra\nsilica audit structure --dataset silica-data   # needs the audit extra"
+ ],
+ "protocol": {
+  "panel_conditions": "8",
+  "common_cohort_rows": "1,536",
+  "panel_max_new_tokens": "384",
+  "trace_token_budget": "16,384",
+  "scratchpad_token_budget": "4,096",
+  "format_gate": ".95",
+  "bootstrap_replicates": "10,000"
+ },
+ "conditions": "27"
+}

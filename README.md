@@ -1,4 +1,23 @@
+<div align="center">
+
 # SILICA
+
+**Certified counterfactual evaluation of identifiability in unseen-language induction:
+does a model know when the evidence in its prompt determines the answer?**
+
+[![Paper](https://img.shields.io/badge/Paper-Findings%20of%20EACL%202027-b31b1b)](https://pengcheng-xu.com/files/SILICA_EACL2027_Findings.pdf)
+[![Project page](https://img.shields.io/badge/Project-page-2a78d6)](https://explcre.github.io/silica/)
+[![Hugging Face dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-ryan1025--x%2Fsilica-ffcc4d)](https://huggingface.co/datasets/ryan1025-x/silica)
+[![Tests](https://github.com/explcre/silica/actions/workflows/tests.yml/badge.svg)](https://github.com/explcre/silica/actions/workflows/tests.yml)
+[![Release](https://img.shields.io/github/v/release/explcre/silica)](https://github.com/explcre/silica/releases)
+[![Python 3.10-3.13](https://img.shields.io/badge/python-3.10%E2%80%933.13-3776ab)](pyproject.toml)
+[![Code license: Apache-2.0](https://img.shields.io/badge/code%20license-Apache--2.0-blue)](LICENSE)
+[![Data license: CC BY 4.0](https://img.shields.io/badge/data%20license-CC%20BY%204.0-lightgrey)](https://creativecommons.org/licenses/by/4.0/)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
+<a href="https://explcre.github.io/silica/"><img src="assets/teaser.png" alt="The paper's worked example on the project page: 256 candidate languages are filtered by the published program and three dictionary facts down to 16; the same 16 agree on one query (ANSWER fox) and split 8/8 on the other (ABSTAIN)." width="860"></a>
+
+</div>
 
 SILICA is a benchmark of certified identifiability for language models. Each
 of its 12,288 rows declares a closed world of 128 candidate micro-languages
@@ -16,6 +35,8 @@ independent clean-room oracle, the prompt renderer, the strict response
 parser and evaluator, the shortcut audits, and the script that reproduces
 every table of the paper. The dataset and every model response analyzed in
 the paper are on the Hugging Face Hub at [`ryan1025-x/silica`](https://huggingface.co/datasets/ryan1025-x/silica).
+The [project page](https://explcre.github.io/silica/) replays the paper's worked
+example step by step and presents the results interactively.
 
 ## Install
 
@@ -114,6 +135,18 @@ examples/            OpenAI-compatible client, evaluation example
 scripts/             paper reproduction and the printed paper values
 docs/                data format and evaluation protocol
 tests/               test suite (no dataset download needed)
+site/                the project page (static HTML) and build_data.py, which computes its data
+assets/              README images
+```
+
+Every number on the project page is computed from the released dataset and
+model responses by `site/build_data.py` and checked against
+`scripts/paper_values.json`; it exits non-zero and writes nothing on any
+difference. It runs every audit and the 10,000-replicate intervals, so it
+needs the `audit` extra and takes about twenty-five minutes on eight cores:
+
+```bash
+python site/build_data.py --hf silica-data
 ```
 
 ## Documentation

@@ -1,0 +1,67 @@
+{
+ "printed": {
+  "records": "12,288",
+  "same_state_query_pairs": "6,144",
+  "four_cell_units": "3,072",
+  "route_groups": "1,536",
+  "templates": "192",
+  "mechanism_families": "4",
+  "templates_per_family": "48",
+  "support_templates": "12",
+  "binary_features": "8",
+  "base_class_size": "256",
+  "declared_class_size": "128",
+  "posterior_size": "16",
+  "gate.in_generator_oracle": "12,288/12,288",
+  "gate.cleanroom_oracle": "12,288/12,288",
+  "gate.prompt_only_solver": "12,288/12,288",
+  "gate.declared_class_size": "12,288/12,288",
+  "gate.posterior_size": "12,288/12,288",
+  "gate.gold_action_balance": "6,144/6,144",
+  "gate.same_state_opposite_action_pairs": "6,144/6,144",
+  "gate.deterministic_shortcuts": "6,144/12,288",
+  "gate.learned_probes": "6,144/12,288 each",
+  "gate.unique_prompt_hashes": "12,288/12,288",
+  "gate.minimum_signature_distance": "4 of 16 positions",
+  "structure.programs": "1,536",
+  "structure.decision_functions": "86",
+  "structure.stated_procedure_median": "5,632",
+  "structure.operator_count_median": "22",
+  "structure.operator_count_range": "6-40",
+  "structure.minimal_formula_median": "3",
+  "structure.minimal_formula_max": "4",
+  "structure.programs_needing_no_operation": "32",
+  "structure.guard_blind_probe": ".500",
+  "structure.guard_given_probe": "1.000"
+ },
+ "families": [
+  "equality_chain",
+  "majority_guard",
+  "parity_guard",
+  "selector_multiplexer"
+ ],
+ "shortcut_controls": [
+  "declared_class_size",
+  "evidence_identities_values_masked",
+  "identifier_routing",
+  "joint_masked",
+  "posterior_cardinality",
+  "query_masked_raw_program_evidence",
+  "row_order",
+  "structural_metrics"
+ ],
+ "learned_probes": [
+  "character__heldout_family",
+  "character__heldout_template",
+  "word__heldout_family",
+  "word__heldout_template"
+ ],
+ "minimal_formula_histogram": {
+  "0": "32",
+  "1": "304",
+  "2": "232",
+  "3": "872",
+  "4": "96"
+ },
+ "dataset_sha256": "d956532e42ecc666835f92071d779c7ad646b707b859794ffd91175d8d954b57"
+}

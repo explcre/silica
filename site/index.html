@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SILICA</title>
+<meta name="description" content="SILICA: a benchmark of certified identifiability. Every record proves whether its evidence determines the answer, and every program/evidence state is queried two ways with opposite correct actions.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="static/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="static/css/site.css">
+<script type="module" src="static/js/main.js"></script>
+</head>
+<body>
+<a class="skip" href="#example">Skip to the worked example</a>
+
+<header class="topbar">
+  <nav class="topnav" aria-label="Sections">
+    <a class="brand" href="#top">SILICA</a>
+    <ul>
+      <li><a href="#example">Example</a></li>
+      <li><a href="#constant">Baseline</a></li>
+      <li><a href="#construction">Construction</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#controls">Controls</a></li>
+      <li><a href="#prompts">Prompts</a></li>
+      <li><a href="#scope">Scope</a></li>
+      <li><a href="#use">Use</a></li>
+      <li><a href="#cite">Cite</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+<!-- Hero ------------------------------------------------------------------------------- -->
+<section id="top" class="hero" aria-labelledby="title">
+  <div class="hero-text">
+    <p class="kicker"><span data-k="meta/venue"></span></p>
+    <h1 id="title"><span class="wordmark">SILICA</span>
+      <span class="subtitle">Certified Counterfactual Evaluation of Identifiability in Unseen-Language Induction</span></h1>
+    <ul class="authors">
+      <li><span class="name">Pengcheng Xu</span> <span class="aff">University of California, Irvine</span></li>
+      <li><span class="name">Xinyu Guan</span> <span class="aff">Alibaba Inc.</span></li>
+    </ul>
+    <ul class="buttons">
+      <li><a class="button primary" href="https://pengcheng-xu.com/files/SILICA_EACL2027_Findings.pdf"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M4 1.5h5.5L13 5v9.5H4z M9.5 1.5V5H13" /></svg>Paper</a></li>
+      <li><a class="button" href="https://github.com/explcre/silica"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M5.5 4.5 2 8l3.5 3.5 M10.5 4.5 14 8l-3.5 3.5" /></svg>Code</a></li>
+      <li><a class="button" href="https://huggingface.co/datasets/ryan1025-x/silica"><svg aria-hidden="true" viewBox="0 0 16 16"><ellipse cx="8" cy="3.75" rx="5.5" ry="2.25" /><path d="M2.5 3.75v8.5c0 1.25 2.5 2.25 5.5 2.25s5.5-1 5.5-2.25v-8.5 M2.5 8c0 1.25 2.5 2.25 5.5 2.25S13.5 9.25 13.5 8" /></svg>Dataset</a></li>
+      <li><a class="button" href="#cite"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M3 3.5h3.5v4H4.5c0 2 .5 3 2 4 M9.5 3.5H13v4h-2c0 2 .5 3 2 4" /></svg>BibTeX</a></li>
+    </ul>
+    <p class="tldr"><strong>TL;DR</strong> SILICA proves, by exhaustive enumeration over a declared class of micro-languages, whether a prompt's evidence determines the answer, and asks every program/evidence state two complementary queries with opposite correct actions; under a silent single-pass protocol, the panel conditions that pass the format gate answer almost independently of gold answerability.</p>
+  </div>
+  <figure class="hero-figure" id="hero-figure" data-src="json">
+    <div class="mini-frame">
+      <svg class="vs-grid mini" id="hero-grid" role="img" aria-labelledby="hero-caption"></svg>
+      <div class="mini-count" aria-hidden="true"><span class="mini-number" id="hero-count"></span><span class="mini-label" id="hero-label"></span></div>
+    </div>
+    <figcaption id="hero-caption">
+      <span>One released record: the version space collapses <span id="hero-sequence" data-src="json"></span> as the program and three dictionary facts are applied.</span>
+      <button type="button" class="chip" id="hero-toggle" data-paused="false"><span class="chip-icon" aria-hidden="true"></span><span class="chip-text">Pause</span></button>
+    </figcaption>
+  </figure>
+</section>
+
+<!-- Worked example ---------------------------------------------------------------------- -->
+<section id="example" aria-labelledby="example-title">
+  <p class="kicker">The idea</p>
+  <h2 id="example-title">One state, two opposite correct actions</h2>
+  <div class="prose">
+    <p>A SILICA record describes a small, closed world. <span data-k="example/grid/features"></span> binary features, four lexical swaps and four grammar settings, give <span data-k="example/grid/size"></span> candidate languages, drawn below as a <span data-k="example/grid/side"></span>&thinsp;&times;&thinsp;<span data-k="example/grid/side"></span> grid: one square per language, columns set by the lexical bits and rows by the grammar bits. The record publishes a Boolean program that keeps half of them, reveals three dictionary facts, and asks one query. The gold action is <span class="tag answer">ANSWER</span> when every language still compatible with the evidence gives the same answer, and <span class="tag abstain">ABSTAIN</span> when two of them disagree.</p>
+    <p>This is the paper's worked example, a released parity-guard pair (items <code data-k="example/queries/0/id"></code> and <code data-k="example/queries/1/id"></code>), replayed one public filter at a time. Step through it, or press play. Every square's state is computed from the released public row with the <code>silica</code> package and checked against the sealed certificates; nothing is drawn by hand.</p>
+  </div>
+
+  <figure class="stepper" id="stepper" data-step="0" data-src="json">
+    <div class="stepper-controls" role="group" aria-label="Step through the worked example">
+      <button type="button" class="icon-button" id="step-prev" aria-label="Previous step"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" /></svg></button>
+      <button type="button" class="icon-button play" id="step-play" aria-label="Play" data-playing="false"><svg viewBox="0 0 16 16" aria-hidden="true" class="icon-play"><path d="M5 3.5v9l7-4.5z" /></svg><svg viewBox="0 0 16 16" aria-hidden="true" class="icon-pause"><path d="M5 3.5v9 M11 3.5v9" /></svg></button>
+      <button type="button" class="icon-button" id="step-next" aria-label="Next step"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" /></svg></button>
+      <label class="scrub"><span class="visually-hidden">Scrub through the steps</span><input type="range" id="step-scrub" min="0" max="0" step="1" value="0"></label>
+    </div>
+    <ol class="step-track" id="step-track" aria-label="Steps"></ol>
+
+    <div class="stepper-body">
+      <div class="grid-panel">
+        <div class="grid-head">
+          <p class="panel-label evaluator"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1" /><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" /></svg>Version space <span class="note">evaluator-only, derivable from the prompt</span></p>
+          <p class="grid-count"><span class="count-number" id="step-count"></span> <span class="count-unit">languages compatible</span></p>
+        </div>
+        <div class="grid-wrap">
+          <svg class="vs-grid" id="stepper-grid" tabindex="0" role="img" aria-describedby="step-caption"></svg>
+          <div class="tooltip" id="grid-tooltip" role="status" hidden></div>
+        </div>
+        <ul class="legend" id="grid-legend">
+          <li><span class="swatch alive" aria-hidden="true"></span>compatible so far</li>
+          <li><span class="swatch dead" aria-hidden="true"></span>eliminated</li>
+          <li><span class="swatch answer" aria-hidden="true">F</span>answers <i>fox</i></li>
+          <li><span class="swatch abstain-s" aria-hidden="true">S</span>subject-initial</li>
+          <li><span class="swatch abstain-v" aria-hidden="true">V</span>verb-initial</li>
+        </ul>
+        <p class="caption" id="step-caption" aria-live="polite"></p>
+      </div>
+
+      <div class="side-panels">
+        <section class="card visible-card" aria-labelledby="visible-title">
+          <h3 id="visible-title" class="panel-label visible"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8s2.5-4.5 6.5-4.5S14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z" /><circle cx="8" cy="8" r="2" /></svg>In the prompt <span class="note">the model sees this</span></h3>
+          <div class="field" data-stage="program">
+            <p class="field-name">Published Boolean program <code>boolean_program</code></p>
+            <div class="program" id="program-infix"></div>
+            <p class="field-note" id="program-legend"></p>
+            <details class="raw"><summary>Show the program as published JSON</summary><pre id="program-json"></pre></details>
+          </div>
+          <div class="field" data-stage="facts">
+            <p class="field-name">Three dictionary facts <code>observations</code></p>
+            <ul class="facts" id="facts-list"></ul>
+          </div>
+          <div class="field" data-stage="queries">
+            <p class="field-name">Two queries of the same state <code>query</code></p>
+            <ul class="queries" id="queries-list"></ul>
+          </div>
+          <div class="field" data-stage="rule">
+            <p class="field-name">Decision rule <code>decision_rule</code></p>
+            <div class="rule" id="decision-rule"></div>
+          </div>
+        </section>
+
+        <section class="card evaluator-card" aria-labelledby="evaluator-title">
+          <h3 id="evaluator-title" class="panel-label evaluator"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1" /><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" /></svg>Evaluator-only <span class="note">never in the prompt</span></h3>
+          <div class="readouts" id="readouts"></div>
+        </section>
+      </div>
+    </div>
+
+    <details class="table-view">
+      <summary>Show the compatible languages as a table</summary>
+      <div class="table-scroll"><table class="bits-table" id="survivor-table"></table></div>
+    </details>
+  </figure>
+
+  <blockquote class="quote">
+    <p>Nothing in this derivation is withheld: the program, the three facts, the realization rules and the decision rule are all in the prompt [&hellip;]. Only the survivor set, its support partition and the two disagreeing witnesses are evaluator-only.</p>
+    <footer>The paper's worked instance</footer>
+  </blockquote>
+</section>
+
+<!-- Constant policies -------------------------------------------------------------------- -->
+<section id="constant" aria-labelledby="constant-title">
+  <p class="kicker">The baseline</p>
+  <h2 id="constant-title">Why a constant policy cannot win</h2>
+  <div class="prose">
+    <p>The two queries of a pair share the same program and the same three observations, and only the query changes; yet one must be answered and the other abstained from. So a policy that does not consult the evidence cannot separate them. Picture one that answers each row at a fixed rate&nbsp;&alpha; and, when it answers, picks a payload without reading the observations. Move the slider to choose&nbsp;&alpha;.</p>
+  </div>
+
+  <figure class="constant-figure" id="constant-figure" data-src="json">
+    <div class="constant-controls">
+      <label for="alpha" class="slider-label">Answer rate <span class="alpha-value">&alpha; = <output id="alpha-out" for="alpha"></output></span></label>
+      <input type="range" id="alpha" min="0" max="0" step="1" value="0">
+      <div class="slider-ends" aria-hidden="true"><span>always <b>ABSTAIN</b></span><span>always <b>ANSWER</b></span></div>
+    </div>
+    <div class="constant-body">
+      <div>
+        <div class="plane-wrap"><svg class="plane" id="constant-plane" role="img" aria-label="Answerable decision recall against false-certainty rate: a constant policy moves along the diagonal, the exact oracle sits in the top-left corner."></svg></div>
+        <ul class="legend">
+          <li><span class="line-key" aria-hidden="true"></span>diagonal: every constant policy (AR = FCR)</li>
+          <li><span class="dot solid" aria-hidden="true"></span>the policy at the chosen &alpha;</li>
+          <li><span class="area-key" aria-hidden="true"></span>shaded: answering depends on the evidence (AR &gt; FCR)</li>
+        </ul>
+      </div>
+      <div class="constant-readouts">
+        <dl class="tiles" id="constant-tiles"></dl>
+        <div class="formulas" id="constant-formulas"></div>
+        <div class="meter-block">
+          <p class="meter-title">Balanced strict joint accuracy (BJA)</p>
+          <svg class="bja-meter" id="bja-meter" role="img" aria-label="BJA of the constant policy against the two constants and the exact oracle"></svg>
+        </div>
+      </div>
+    </div>
+  </figure>
+
+  <div class="prose">
+    <dl class="defs">
+      <div><dt>AR</dt><dd>answerable decision recall: how often the policy answers when the evidence determines the answer.</dd></div>
+      <div><dt>FCR</dt><dd>false-certainty rate: how often it answers when the evidence does not.</dd></div>
+      <div><dt>UR, EAR</dt><dd>abstention recall on underdetermined rows, and exact answerable recall (answer plus the canonical payload).</dd></div>
+      <div><dt>BDA, BJA</dt><dd>balanced decision accuracy, the mean of AR and UR, and balanced strict joint accuracy, the mean of EAR and UR.</dd></div>
+    </dl>
+    <p>The policy answers at the same rate whatever the gold action, so AR equals FCR and BDA stays at one half. Its evidence-blind payload is right on exactly one of the two answerable rows of every four-cell unit, because those two rows carry different canonical payloads. BJA therefore slides between the always-ABSTAIN constant (<span data-k="results/panel/rows/always-abstain/values/7"></span>) and the always-ANSWER constant (<span data-k="results/panel/rows/always-answer/values/7"></span>), while the exact oracle reaches <span data-k="results/panel/rows/exact-oracle/values/7"></span>.</p>
+    <blockquote class="quote inline"><p>Reporting UR, EAR or BJA alone therefore cannot distinguish a competent model from a differently tuned constant.</p><footer>Appendix on metrics</footer></blockquote>
+  </div>
+</section>
+
+<!-- Construction ------------------------------------------------------------------------- -->
+<section id="construction" aria-labelledby="construction-title">
+  <p class="kicker">Construction</p>
+  <h2 id="construction-title">Built to resist shortcuts</h2>
+  <div class="prose">
+    <p>The rows are nested views of a much smaller number of logical objects, and the nesting is what makes the test hard to game. Below is one real route group from the release, the one that contains the worked example: four evidence states, each queried on both coordinates. Every column is a same-state pair with opposite gold actions; every row is a four-cell unit with two answers and two abstentions.</p>
+  </div>
+
+  <figure class="route-figure" data-src="json">
+    <div class="route-scroll"><div class="route-grid" id="route-grid"></div></div>
+    <figcaption id="route-caption"></figcaption>
+  </figure>
+
+  <figure class="ladder-figure" data-src="json">
+    <ol class="ladder" id="ladder"></ol>
+    <figcaption>Only the semantic templates are primary generalization clusters; the lower levels support the paired and complete-unit endpoints. Intervals resample templates within mechanism families.</figcaption>
+  </figure>
+
+  <h3 class="sub">Release gates</h3>
+  <div class="prose">
+    <p>The construction was accepted only after constant-cardinality, paired-query, learned-probe and independent clean-room gates were fixed, before any direct-model inference. Two oracles must be exact, and every query-masked control and learned probe must sit exactly at chance; a solver that reads only the rendered user message reproduces every gold label. The strongest query-masked control keeps the raw program and evidence and is exactly at chance because every state receives both labels.</p>
+  </div>
+  <figure class="gates-figure" data-src="json">
+    <ul class="gates" id="gates"></ul>
+    <figcaption>All values recomputed from the released files by the build script: certificates and the in-generator oracle with <code>silica verify</code>'s validator, the standard-library clean-room oracle, the prompt-only solver, the frozen shortcut controls and the word and character TF-IDF probes under held-out-template and held-out-family splits. These rule out the audited shortcut families, not every future heuristic.</figcaption>
+  </figure>
+</section>
+
+<!-- Results ------------------------------------------------------------------------------ -->
+<section id="results" aria-labelledby="results-title">
+  <p class="kicker">Results</p>
+  <h2 id="results-title">Silent single-pass models answer almost independently of answerability</h2>
+  <div class="prose">
+    <p>The sealed panel was frozen before any output was inspected: <span id="panel-list" data-src="json"></span>, each on the same <span data-k="meta/protocol/common_cohort_rows"></span>-row common cohort, with greedy decoding, at most <span data-k="meta/protocol/panel_max_new_tokens"></span> new tokens, no worked example, and the instruction to reason silently. Hover or focus a point for its full row of the paper's sealed-panel table.</p>
+  </div>
+
+  <div class="results-grid">
+    <figure class="scatter-figure" data-src="json">
+      <figcaption class="figure-title">Answer rate on answerable rows (AR) against answer rate on underdetermined rows (FCR)</figcaption>
+      <div class="plane-wrap"><svg class="plane scatter" id="panel-scatter" role="group" aria-label="Sealed panel: AR against FCR for each condition"></svg><div class="tooltip" id="scatter-tooltip" role="status" hidden></div></div>
+      <ul class="legend">
+        <li><span class="line-key" aria-hidden="true"></span>diagonal: constant policies (AR = FCR)</li>
+        <li><span class="dot solid" aria-hidden="true"></span>passes the <span data-k="meta/protocol/format_gate"></span> format gate</li>
+        <li><span class="dot hollow" aria-hidden="true"></span>below the gate (&dagger;): reported, excluded from the hardness claim</li>
+        <li><span class="dot oracle" aria-hidden="true"></span>exact oracle</li>
+      </ul>
+    </figure>
+    <div class="results-text prose">
+      <p><strong>The decision carries almost no information about answerability.</strong> Across all eight conditions the signed gap AR&nbsp;&minus;&nbsp;FCR stays inside <span data-k="results/numbers/panel.decision_signal_range"></span>, so every point lies on or right next to the diagonal where constant policies live, and no condition exceeds <span data-k="results/numbers/panel.max_balanced_decision_accuracy"></span> balanced decision accuracy.</p>
+      <p><strong>Payloads stay near chance.</strong> Conditional payload accuracy spans <span data-k="results/numbers/panel.conditional_payload_accuracy_range"></span>, and <span data-k="results/numbers/panel.format_valid_conditional_payload_accuracy_range"></span> for the <span data-k="results/numbers/panel.format_valid_conditions"></span> format-valid conditions, against an evidence-blind reference of exactly one half.</p>
+      <p><strong>Scale relocates the policy.</strong> Balanced strict joint accuracy rises from <span data-k="results/panel/rows/qwen25-7b/values/7"></span> (<span data-k="results/panel/rows/qwen25-3b/label"></span> and <span data-k="results/panel/rows/qwen25-7b/label"></span>) to <span data-k="results/panel/rows/qwen25-32b/values/7"></span> (<span data-k="results/panel/rows/qwen25-32b/label"></span>), and the rise is entirely the abstention half: <span data-k="results/panel/rows/qwen25-7b/label"></span> answers every row, while <span data-k="results/panel/rows/qwen25-32b/label"></span> abstains on almost every row. The format-valid conditions lie between the two constants, and the strongest interval, <span data-k="results/panel/rows/qwen25-32b/values/8"></span>, falls <em>below</em> always-ABSTAIN.</p>
+    </div>
+  </div>
+
+  <div class="results-grid second">
+    <figure class="ladder-chart" data-src="json">
+      <figcaption class="figure-title">BJA with <span data-k="meta/protocol/bootstrap_replicates"></span>-replicate template-cluster intervals</figcaption>
+      <svg class="bja-ladder" id="bja-ladder" role="img" aria-label="Balanced strict joint accuracy of each panel condition, between the always-ANSWER and always-ABSTAIN constants"></svg>
+    </figure>
+    <aside class="stat-tile" data-src="json">
+      <p class="stat-label">Complete eight-row route groups, best panel condition</p>
+      <p class="stat-value" data-k="results/numbers/panel.max_complete_route_groups"></p>
+      <p class="stat-note">The endpoint the benchmark was built for: both orientations and all four same-state pairs strictly correct. Every sealed condition scores zero.</p>
+    </aside>
+  </div>
+
+  <details class="table-view">
+    <summary>Show the sealed-panel table</summary>
+    <div class="table-scroll"><table class="data-table" id="panel-table" data-src="json"></table></div>
+  </details>
+
+  <p class="scope-note"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" /><path d="M8 7v4.5 M8 4.5v.5" /></svg><span>Scope: these results concern the silent single-pass protocol. In the paper's words, every claim about the panel is <q>a claim about the silent single-pass envelope, not about what these models can do given room to derive</q>.</span></p>
+</section>
+
+<!-- Matched controls --------------------------------------------------------------------- -->
+<section id="controls" aria-labelledby="controls-title">
+  <p class="kicker">Controls</p>
+  <h2 id="controls-title">Matched controls</h2>
+  <div class="prose">
+    <p>Each pair changes one factor on a fixed checkpoint: a visible reasoning trace for two reasoning models (a <span data-k="meta/protocol/trace_token_budget"></span>-token budget, with only the final content scored), or a visible <code>&lt;think&gt;</code> scratchpad with a <span data-k="meta/protocol/scratchpad_token_budget"></span>-token budget for two panel models. Flip the factor and watch which rows move.</p>
+  </div>
+
+  <figure class="controls-figure" data-src="json">
+    <div class="segmented" role="group" aria-label="Reasoning trace or scratchpad">
+      <button type="button" id="factor-off" aria-pressed="true">Silent: no trace, no scratchpad</button>
+      <button type="button" id="factor-on" aria-pressed="false">Visible trace or scratchpad</button>
+    </div>
+    <div class="controls-cards" id="controls-cards"></div>
+    <figcaption>Bars: AR&nbsp;&minus;&nbsp;FCR on a symmetric scale around zero; CPA and BJA from zero to one with their chance and constant-policy marks; complete route groups as a share of the <span data-k="construction/printed/templates"></span> in the cohort. &lowast;&nbsp;Released prompt served through the ablation harness, which reproduces each sealed panel row to within <span data-k="results/numbers/ablation.qwen25-14b.verbatim_vs_sealed_max_abs_diff"></span>.</figcaption>
+  </figure>
+
+  <div class="results-grid">
+    <aside class="stat-tile" data-src="json">
+      <p class="stat-label">Route groups still unsolved with the trace</p>
+      <p class="stat-value" data-k="results/numbers/qwen3-235b-trace-on.unsolved_route_groups"></p>
+      <p class="stat-note">The endpoints move, so they measure something achievable, and most route groups remain unsolved.</p>
+    </aside>
+    <div class="prose">
+      <p><strong>A visible reasoning trace escapes the constant-policy regime.</strong> With the trace on, <span data-k="results/matched/models/qwen3-235b-trace-on"></span> leaves the frontier: decision signal <span data-k="results/matched/rows/qwen3-235b-trace-off/values/1"></span> &rarr; <span data-k="results/matched/rows/qwen3-235b-trace-on/values/1"></span>, conditional payload accuracy <span data-k="results/matched/rows/qwen3-235b-trace-off/values/2"></span> &rarr; <span data-k="results/matched/rows/qwen3-235b-trace-on/values/2"></span>, BJA <span data-k="results/matched/rows/qwen3-235b-trace-off/values/3"></span> &rarr; <span data-k="results/matched/rows/qwen3-235b-trace-on/values/3"></span>, and complete route groups <span data-k="results/matched/rows/qwen3-235b-trace-off/values/4"></span> &rarr; <span data-k="results/matched/rows/qwen3-235b-trace-on/values/4"></span>.</p>
+      <p><strong>Neither size nor the trace alone moves the endpoints.</strong> Without the trace the same checkpoint returns to the frontier; with the same permission <span data-k="results/matched/models/qwen3-17b-trace-on"></span> stays on it; and a scratchpad leaves <span data-k="results/matched/models/qwen25-14b-ablation-scratchpad"></span> and <span data-k="results/matched/models/qwen25-32b-ablation-scratchpad"></span> there too. Sampling is not the cause either: on <span data-k="results/matched/models/qwen35-2b-greedy"></span>, greedy and stochastic decoding give the same always-ANSWER policy (AR&nbsp;&minus;&nbsp;FCR <span data-k="results/matched/rows/qwen35-2b-greedy/values/1"></span> and <span data-k="results/matched/rows/qwen35-2b-stochastic/values/1"></span>).</p>
+    </div>
+  </div>
+
+  <details class="table-view">
+    <summary>Show the matched-controls table</summary>
+    <div class="table-scroll"><table class="data-table" id="matched-table" data-src="json"></table></div>
+  </details>
+</section>
+
+<!-- Prompt ablations ----------------------------------------------------------------------- -->
+<section id="prompts" aria-labelledby="prompts-title">
+  <p class="kicker">Ablations</p>
+  <h2 id="prompts-title">Prompt changes move the answer rate, not the signal</h2>
+  <div class="prose">
+    <p>Four renderings of the same cohort were served to two panel checkpoints: the released prompt (<code>verbatim</code>); a <code>&lt;think&gt;</code> scratchpad (<code>scratchpad</code>); a shorter user message that keeps the feature-value declaration (<code>lean</code>); and the guarded-switch route in place of the enumeration (<code>compact_rule</code>, an upper bound on what relieving the stated procedure can buy, not a matched control). Every arm stays on or right next to the diagonal: the answer rate changes a lot, the decision signal barely at all.</p>
+  </div>
+
+  <figure class="ablation-figure" data-src="json">
+    <div class="ablation-planes" id="ablation-planes"></div>
+    <figcaption>Exploratory arms run outside the sealed evaluation stack. Across both models the decision signal stays in <span data-k="results/numbers/ablation.decision_signal_range"></span> and the all-eight endpoint at <span data-k="results/numbers/ablation.max_complete_route_groups"></span>.</figcaption>
+  </figure>
+
+  <h3 class="sub">The decision itself is small</h3>
+  <div class="prose">
+    <p>The stated enumerate-and-filter route costs <span data-k="construction/printed/base_class_size"></span> declared-universe assignments times the published program's operator count (median <span data-k="construction/printed/structure.operator_count_median"></span>, range <span data-k="construction/printed/structure.operator_count_range"></span>): a median of <span data-k="construction/printed/structure.stated_procedure_median"></span> operator evaluations per row. The minimal sufficient decision is a Boolean function of the three revealed bits with minimal formula size <span data-k="construction/printed/structure.minimal_formula_median"></span> (median), at most <span data-k="construction/printed/structure.minimal_formula_max"></span>; <span data-k="construction/printed/structure.programs_needing_no_operation"></span> of the <span data-k="construction/printed/structure.programs"></span> programs need none at all.</p>
+  </div>
+  <figure class="ops-figure" data-src="json">
+    <div class="ops" id="ops"></div>
+    <figcaption>Each cell is one Boolean operator evaluation, drawn to the same scale.</figcaption>
+  </figure>
+  <figure class="probe-figure" data-src="json">
+    <ul class="gates probes" id="guard-probes"></ul>
+    <figcaption>Gradient-boosted probes under the held-out-template and held-out-family splits. The guard value is not a field of the input: obtaining it <em>is</em> evaluating the published program against the evidence, and a predictor that never performs that evaluation sits at chance whatever else it is given.</figcaption>
+  </figure>
+</section>
+
+<!-- Scope -------------------------------------------------------------------------------- -->
+<section id="scope" aria-labelledby="scope-title">
+  <p class="kicker">Scope</p>
+  <h2 id="scope-title">Scope and limitations</h2>
+  <ul class="limits">
+    <li><strong>A closed synthetic instrument.</strong> SILICA certifies identifiability only relative to each declared finite class, uses generated inventories and a simplified grammar, and its mechanism families encode one guarded-switch principle, so it supports no claim about open-domain underspecification, tool discovery or natural low-resource translation.</li>
+    <li><strong>A silent single-pass claim.</strong> The constant-policy result concerns format-valid, direct, silent single-pass conditions; a visible reasoning trace changes the result for at least one large reasoning model.</li>
+    <li><strong>One model family.</strong> The format-valid evidence comes from one model family: all <span data-k="results/numbers/panel.format_valid_conditions"></span> conditions that pass the format gate are <span data-k="results/panel/gate_family"></span> checkpoints.</li>
+    <li><strong>An exploratory trace stratum.</strong> The trace-permitted conditions are exploratory controls, each varying one factor on one checkpoint, rather than a scaling study.</li>
+    <li><strong>Audited, not exhaustive.</strong> The shortcut audits cover the families specified, and the intervals condition on one finite registry.</li>
+  </ul>
+</section>
+
+<!-- Use ---------------------------------------------------------------------------------- -->
+<section id="use" aria-labelledby="use-title">
+  <p class="kicker">Use it</p>
+  <h2 id="use-title">Use SILICA</h2>
+  <div class="prose">
+    <p>Install the package, download the dataset, check it, render the exact prompts, run your model, and score it. The common cohort is the one used in the paper; <code>--cohort full</code> renders every row.</p>
+  </div>
+  <div class="commands" data-src="json">
+    <div class="command"><p class="command-title">Install</p><div class="code-block"><pre><code id="cmd-install"></code></pre><button type="button" class="copy" data-copy="cmd-install">Copy</button></div></div>
+    <div class="command"><p class="command-title">Download, verify, render prompts, run a model, evaluate</p><div class="code-block"><pre><code id="cmd-quickstart"></code></pre><button type="button" class="copy" data-copy="cmd-quickstart">Copy</button></div></div>
+    <div class="command"><p class="command-title">Reproduce the paper's tables and construction claims</p><div class="code-block"><pre><code id="cmd-reproduce"></code></pre><button type="button" class="copy" data-copy="cmd-reproduce">Copy</button></div></div>
+  </div>
+
+  <h3 class="sub">Inspect the example</h3>
+  <div class="prose">
+    <p>The public row is the released model-facing record; the prompt renderer projects its routing fields, identifiers and hashes away before a model sees it. The gold record is evaluator-only and joined by <code>id</code>. Nested fields start collapsed.</p>
+  </div>
+  <div class="viewer" data-src="json">
+    <div class="segmented" role="group" aria-label="Which item">
+      <button type="button" id="item-answer" aria-pressed="true"><span class="tag answer">ANSWER</span> lexical query</button>
+      <button type="button" id="item-abstain" aria-pressed="false"><span class="tag abstain">ABSTAIN</span> grammar query</button>
+    </div>
+    <div class="viewer-panes">
+      <div class="pane"><p class="panel-label visible"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8s2.5-4.5 6.5-4.5S14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z" /><circle cx="8" cy="8" r="2" /></svg>Public row</p><div class="json-tree" id="tree-public"></div></div>
+      <div class="pane"><p class="panel-label evaluator"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1" /><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" /></svg>Gold record</p><div class="json-tree" id="tree-gold"></div></div>
+    </div>
+    <details class="raw prompt-raw"><summary>Show the exact rendered prompt (system and user message)</summary><div id="prompt-view"></div></details>
+    <div class="responses">
+      <p class="command-title">Released model responses to this pair</p>
+      <p class="responses-note" id="responses-note"></p>
+      <div class="table-scroll"><table class="data-table" id="responses-table"></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- Cite --------------------------------------------------------------------------------- -->
+<section id="cite" aria-labelledby="cite-title">
+  <p class="kicker">Cite</p>
+  <h2 id="cite-title">BibTeX</h2>
+  <div class="code-block bibtex" data-src="json"><pre><code id="bibtex"></code></pre><button type="button" class="copy" data-copy="bibtex">Copy</button></div>
+  <p class="copied" id="copy-status" role="status" aria-live="polite"></p>
+</section>
+
+</main>
+
+<footer class="site-footer" data-src="json">
+  <p class="footer-links"><a href="https://pengcheng-xu.com/files/SILICA_EACL2027_Findings.pdf">Paper</a><a href="https://github.com/explcre/silica">Code</a><a href="https://huggingface.co/datasets/ryan1025-x/silica">Dataset</a></p>
+  <p>Code: <span data-k="meta/licenses/code"></span>. Data: <span data-k="meta/licenses/data"></span>; the released model responses are also subject to the licence of the model that produced them.</p>
+  <p class="provenance">Every number on this page is computed from the released dataset (checksum <code class="hash" data-k="construction/dataset_sha256"></code>) with <code>silica</code> <span data-k="meta/version"></span> by <code>site/build_data.py</code>, and checked against the values printed in the paper.</p>
+</footer>
+
+<noscript><p class="noscript">This page draws its figures and numbers from the released data with JavaScript.</p></noscript>
+</body>
+</html>

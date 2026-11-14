@@ -657,5 +657,245 @@
       "value": "29",
       "where": "Appendix F"
     }
+  },
+  "construction": {
+    "records": {
+      "value": "12,288",
+      "where": "Table 1"
+    },
+    "same_state_query_pairs": {
+      "value": "6,144",
+      "where": "Table 1"
+    },
+    "four_cell_units": {
+      "value": "3,072",
+      "where": "Table 1"
+    },
+    "route_groups": {
+      "value": "1,536",
+      "where": "Table 1"
+    },
+    "templates": {
+      "value": "192",
+      "where": "Table 1"
+    },
+    "mechanism_families": {
+      "value": "4",
+      "where": "Table 1 (four mechanism families x48)"
+    },
+    "templates_per_family": {
+      "value": "48",
+      "where": "Table 1"
+    },
+    "support_templates": {
+      "value": "12",
+      "where": "Table 1"
+    },
+    "binary_features": {
+      "value": "8",
+      "where": "Section 3.3 (eight binary features, 2^8=256)"
+    },
+    "base_class_size": {
+      "value": "256",
+      "where": "Section 3.3"
+    },
+    "declared_class_size": {
+      "value": "128",
+      "where": "Section 3.3"
+    },
+    "posterior_size": {
+      "value": "16",
+      "where": "Section 3.3"
+    },
+    "gate.in_generator_oracle": {
+      "value": "12,288/12,288",
+      "where": "Table 2"
+    },
+    "gate.cleanroom_oracle": {
+      "value": "12,288/12,288",
+      "where": "Table 2"
+    },
+    "gate.prompt_only_solver": {
+      "value": "12,288/12,288",
+      "where": "Table 2"
+    },
+    "gate.declared_class_size": {
+      "value": "12,288/12,288",
+      "where": "Table 2"
+    },
+    "gate.posterior_size": {
+      "value": "12,288/12,288",
+      "where": "Table 2"
+    },
+    "gate.gold_action_balance": {
+      "value": "6,144/6,144",
+      "where": "Table 2"
+    },
+    "gate.same_state_opposite_action_pairs": {
+      "value": "6,144/6,144",
+      "where": "Table 2"
+    },
+    "gate.deterministic_shortcuts": {
+      "value": "6,144/12,288",
+      "where": "Table 2"
+    },
+    "gate.learned_probes": {
+      "value": "6,144/12,288 each",
+      "where": "Table 2"
+    },
+    "gate.unique_prompt_hashes": {
+      "value": "12,288/12,288",
+      "where": "Table 2"
+    },
+    "gate.minimum_signature_distance": {
+      "value": "4 of 16 positions",
+      "where": "Table 2"
+    },
+    "structure.programs": {
+      "value": "1,536",
+      "where": "Appendix I"
+    },
+    "structure.decision_functions": {
+      "value": "86",
+      "where": "Appendix I"
+    },
+    "structure.stated_procedure_median": {
+      "value": "5,632",
+      "where": "Appendix I"
+    },
+    "structure.operator_count_median": {
+      "value": "22",
+      "where": "Appendix I"
+    },
+    "structure.operator_count_range": {
+      "value": "6-40",
+      "where": "Appendix I"
+    },
+    "structure.minimal_formula_median": {
+      "value": "3",
+      "where": "Appendix I"
+    },
+    "structure.minimal_formula_max": {
+      "value": "4",
+      "where": "Appendix I"
+    },
+    "structure.programs_needing_no_operation": {
+      "value": "32",
+      "where": "Appendix I"
+    },
+    "structure.guard_blind_probe": {
+      "value": ".500",
+      "where": "Appendix I (both splits)"
+    },
+    "structure.guard_given_probe": {
+      "value": "1.000",
+      "where": "Appendix I (both splits)"
+    }
+  },
+  "protocol": {
+    "panel_conditions": {
+      "value": "8",
+      "where": "Abstract (eight sealed silent single-pass panel conditions)"
+    },
+    "common_cohort_rows": {
+      "value": "1,536",
+      "where": "Section 4.3"
+    },
+    "panel_max_new_tokens": {
+      "value": "384",
+      "where": "Section 4.2"
+    },
+    "trace_token_budget": {
+      "value": "16,384",
+      "where": "Section 6.2"
+    },
+    "scratchpad_token_budget": {
+      "value": "4,096",
+      "where": "Table 3 caption"
+    },
+    "format_gate": {
+      "value": ".95",
+      "where": "Section 6.2 (prespecified verdict)"
+    },
+    "bootstrap_replicates": {
+      "value": "10,000",
+      "where": "Section 5"
+    }
+  },
+  "worked_example": {
+    "answer_item": {
+      "value": "silica-d8de6e0dbb2c8bd57d7c8bd9",
+      "where": "Appendix B.1"
+    },
+    "abstain_item": {
+      "value": "silica-4df031b78b218b09cff975e2",
+      "where": "Appendix B.1"
+    },
+    "paired_state": {
+      "value": "hard-v2-state-b1e9ee8eb2baed19aee4",
+      "where": "Appendix B.1"
+    },
+    "answer_prompt_sha256": {
+      "value": "7d29fc3adf69506064c959c3996a661d2d881e1f67b83abee63e3f77682a61cb",
+      "where": "Appendix B.1"
+    },
+    "abstain_prompt_sha256": {
+      "value": "5a1cb07dc66456f83b275de957a0438626ec024da9e5c14d74209ca94b2ce414",
+      "where": "Appendix B.1"
+    },
+    "user_message_characters": {
+      "value": "6,648",
+      "where": "Appendix L"
+    },
+    "family": {
+      "value": "parity_guard",
+      "where": "Section 3.3 (released parity item); Table 4"
+    },
+    "elimination": {
+      "value": "256, 128, 64, 32, 16",
+      "where": "Figure 1 caption"
+    },
+    "facts": {
+      "value": "pudo->red, levu->see, reze->dog",
+      "where": "Section 3.3"
+    },
+    "pinned_bits": {
+      "value": "0, 0, 1",
+      "where": "Section 3.3 (the facts pin M=0, V=0 and D=1)"
+    },
+    "lexical_query_form": {
+      "value": "helu",
+      "where": "Section 3.3"
+    },
+    "lexical_support": {
+      "value": "fox 16/16",
+      "where": "Figure 5 caption"
+    },
+    "grammar_query_feature": {
+      "value": "order_family",
+      "where": "Section 3.3"
+    },
+    "grammar_split": {
+      "value": "8/8",
+      "where": "Figure 1 caption"
+    },
+    "witnesses": {
+      "value": "h002, h018",
+      "where": "Figure 1 caption"
+    },
+    "answer_gold": {
+      "value": {
+        "decision": "ANSWER",
+        "answer": "fox"
+      },
+      "where": "Appendix B"
+    },
+    "abstain_gold": {
+      "value": {
+        "decision": "ABSTAIN",
+        "answer": null
+      },
+      "where": "Appendix B"
+    }
   }
 }
