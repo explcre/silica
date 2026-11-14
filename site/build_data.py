@@ -125,6 +125,246 @@ def infix(expression: Mapping[str, Any], names: Sequence[str], top: bool = True)
 # --- the worked example (Figure 1) -------------------------------------------------
 
 
+def partial(expression: Mapping[str, Any], known: Mapping[str, bool]) -> bool | None:
+    """Evaluate an expression when only some bits are known; None while its value is open."""
+    operation = str(expression["op"])
+    if operation == "var":
+        return known.get(str(expression["name"]))
+    if operation == "const":
+        return bool(expression["value"])
+    if operation == "not":
+        value = partial(expression["arg"], known)
+        return None if value is None else not value
+    values = [partial(item, known) for item in expression["args"]]
+    if operation == "and":
+        return False if False in values else None if None in values else True
+    if operation == "or":
+        return True if True in values else None if None in values else False
+    if operation == "implies":
+        if values[0] is False or values[1] is True:
+            return True
+        return None if None in values else False
+    if operation == "ite":
+        if values[0] is None:
+            return values[1] if values[1] == values[2] else None
+        return values[1] if values[0] else values[2]
+    if None in values:
+        return None
+    if operation == "xor":
+        return sum(values) % 2 == 1
+    return values[0] == values[1]
+
+
+def substitute(expression: Mapping[str, Any], known: Mapping[str, bool]) -> dict[str, Any]:
+    """Replace every known bit of an expression by its value."""
+    operation = str(expression["op"])
+    if operation == "var":
+        name = str(expression["name"])
+        return {"op": "const", "value": known[name]} if name in known else dict(expression)
+    if operation == "const":
+        return dict(expression)
+    if operation == "not":
+        return {"op": "not", "arg": substitute(expression["arg"], known)}
+    return {"op": operation, "args": [substitute(item, known) for item in expression["args"]]}
+
+
+def gloss(expression: Mapping[str, Any], names: Sequence[str], top: bool = True) -> str:
+    """Say an expression in plain English: odd number on, is the same as, not, and, if/then."""
+    operation = str(expression["op"])
+    if operation == "var":
+        return f"b{names.index(str(expression['name']))}"
+    if operation == "const":
+        return "1" if expression["value"] else "0"
+    if operation == "not":
+        return "not " + gloss(expression["arg"], names, top=False)
+    parts = [gloss(item, names, top=False) for item in expression["args"]]
+    if operation == "ite":
+        return f"(if {parts[0]} then {parts[1]}, otherwise {parts[2]})"
+    if operation == "xor":
+        text = f"an odd number of {', '.join(parts)} are on"
+    elif operation == "implies":
+        text = f"if {parts[0]}, then {parts[1]}"
+    else:
+        text = {"and": " and ", "or": " or ", "eq": " is the same as "}[operation].join(parts)
+    return text if top else f"({text})"
+
+
+def switches(declaration: Mapping[str, Any]) -> dict[str, Any]:
+    """Describe the declared switches: lexical pairs and grammar settings, bit by bit."""
+    features = declaration["feature_variables_lsb_to_msb"]
+    sizes = {len(item["values"]) for item in features}
+    if len(sizes) != 1:
+        raise ValueError("the declared features do not all have the same number of values")
+    lexical = [item for item in features if item["kind"] == "lexical"]
+    for feature, axis in zip(lexical, declaration["lexical_axes"], strict=True):
+        if feature["name"].split("_")[::2] != axis["name"].split("_")[::2]:
+            raise ValueError(f"lexical axis {axis['name']} does not bind to {feature['name']}")
+    grammar = {axis["name"]: axis["values"] for axis in declaration["grammar_axes"]}
+    bit = {item["name"]: f"b{index}" for index, item in enumerate(features)}
+    return {
+        "count": str(len(features)),
+        "values_per_switch": str(sizes.pop()),
+        "languages": count(declaration["base_class_size"]),
+        "lexical": [
+            {
+                "bit": bit[feature["name"]],
+                "feature": feature["name"],
+                "category": axis["category"],
+                "forms": axis["forms"],
+                "meanings": axis["possible_meanings"],
+            }
+            for feature, axis in zip(lexical, declaration["lexical_axes"], strict=True)
+        ],
+        "grammar": [
+            {"bit": bit[item["name"]], "feature": item["name"], "values": grammar[item["name"]]}
+            for item in features
+            if item["kind"] == "grammar"
+        ],
+    }
+
+
+def deduction(
+    declaration: Mapping[str, Any],
+    pins: Sequence[tuple[str, int]],
+    survivors: Sequence[Sequence[int]],
+    queries: Sequence[Mapping[str, Any]],
+) -> tuple[dict[str, Any], dict[str, str]]:
+    """Derive the example's decisions from the program and the facts, without enumeration.
+
+    The program is a guarded switch: one rule applies when the guard G is true and
+    the other when it is false.  The facts fix G, so exactly one rule fires and forces
+    its bit; the other rule says nothing and its bit stays free.  Every step is checked
+    against the enumerated survivors.
+    """
+    names = list(FEATURE_NAMES)
+    constraints = [
+        part
+        for item in declaration["boolean_program"]["constraints"]
+        for part in (item["args"] if item["op"] == "and" else [item])
+    ]
+    if len(constraints) != 2 or any(item["op"] != "implies" for item in constraints):
+        raise ValueError("the example program is not two implications")
+    first, second = (item["args"][0] for item in constraints)
+    if first == {"op": "not", "arg": second}:
+        guard = second
+    elif second == {"op": "not", "arg": first}:
+        guard = first
+    else:
+        raise ValueError("the example program is not a guarded switch")
+    known = {feature: bool(value) for feature, value in pins}
+    guard_value = partial(guard, known)
+    if guard_value is None:
+        raise ValueError("the facts do not decide the guard")
+    rules = []
+    for constraint in constraints:
+        premise, conclusion = constraint["args"]
+        free = [
+            item
+            for item in conclusion.get("args", [])
+            if item["op"] == "var" and item["name"] not in known
+        ]
+        if conclusion["op"] != "eq" or len(free) != 1:
+            raise ValueError("a rule's conclusion is not 'bit = expression'")
+        target = free[0]
+        (expression,) = [item for item in conclusion["args"] if item is not target]
+        fires = partial(premise, known)
+        step = {
+            "when_guard": premise == guard,
+            "fires": fires,
+            "symbolic": infix(constraint, names),
+            "target": gloss(target, names),
+            "feature": target["name"],
+            "expression": gloss(expression, names),
+            "plugged": gloss(substitute(expression, known), names),
+            "value": partial(expression, known),
+        }
+        if expression["op"] == "ite" and fires:
+            condition, then, otherwise = expression["args"]
+            chosen = then if partial(condition, known) else otherwise
+            step["condition"] = {
+                "bit": gloss(condition, names),
+                "value": str(int(partial(condition, known))),
+            }
+            step["chosen"] = {
+                "bit": gloss(chosen, names),
+                "value": str(int(partial(chosen, known))),
+            }
+        rules.append(step)
+    firing = [rule for rule in rules if rule["fires"]]
+    silent = [rule for rule in rules if rule["fires"] is False]
+    if len(firing) != 1 or len(silent) != 1 or firing[0]["value"] is None:
+        raise ValueError("the facts do not make exactly one rule fire and force its bit")
+    forced, free = firing[0], silent[0]
+    forced_column = [bits[names.index(forced["feature"])] for bits in survivors]
+    free_column = Counter(bits[names.index(free["feature"])] for bits in survivors)
+    if set(forced_column) != {int(forced["value"])}:
+        raise ValueError("the forced bit is not constant over the compatible languages")
+    lexical, grammar = queries
+    if (lexical["feature"], grammar["feature"]) != (forced["feature"], free["feature"]):
+        raise ValueError("the forced and free bits are not the two queried features")
+    described = switches(declaration)
+    axis = next(item for item in described["lexical"] if item["feature"] == forced["feature"])
+    free_values = next(
+        item["values"] for item in described["grammar"] if item["feature"] == free["feature"]
+    )
+    position = axis["forms"].index(lexical["query"]["form"])
+    meaning = axis["meanings"][position if not forced_column[0] else 1 - position]
+    if meaning != lexical["gold"]["answer"]:
+        raise ValueError("the forced bit does not give the gold payload")
+    support = sorted(item["count"] for item in grammar["support"])
+    if sorted(free_column.values()) != support or len(free_column) != 2:
+        raise ValueError("the free bit does not split the languages like the gold support")
+    conjuncts = guard["args"] if guard["op"] == "and" else [guard]
+    data = {
+        "guard": {
+            "symbolic": infix(guard, names),
+            "plain": gloss(guard, names),
+            "value": guard_value,
+            "parts": [
+                {
+                    "symbolic": infix(part, names),
+                    "plain": gloss(part, names),
+                    "plugged": gloss(substitute(part, known), names),
+                    "on": (
+                        str(sum(bool(partial(item, known)) for item in part["args"]))
+                        if part["op"] == "xor"
+                        else None
+                    ),
+                    "of": str(len(part["args"])) if part["op"] == "xor" else None,
+                    "value": partial(part, known),
+                }
+                for part in conjuncts
+            ],
+        },
+        "rules": rules,
+        "facts": [
+            {"bit": f"b{names.index(feature)}", "feature": feature, "value": str(value)}
+            for feature, value in pins
+        ],
+        "forced": {
+            "bit": forced["target"],
+            "value": str(int(forced["value"])),
+            "form": lexical["query"]["form"],
+            "meaning": meaning,
+            "support": lexical["support_text"],
+        },
+        "free": {
+            "bit": free["target"],
+            "feature": free["feature"],
+            "split": {value: count(free_column[index]) for index, value in enumerate(free_values)},
+        },
+    }
+    printed = {
+        "guard_fires": str(guard_value).lower(),
+        "constant_feature": forced["feature"],
+        "constant_column": forced["target"],
+        "constant_value": data["forced"]["value"],
+        "free_feature": free["feature"],
+        "split_column": free["target"],
+    }
+    return data, printed
+
+
 def pinned_bit(fact: Any, universe: Sequence[Hypothesis], inventory: Any) -> tuple[str, int]:
     """Return the one feature bit an observation fixes over the whole base class."""
     consistent = [item for item in universe if is_consistent(item, fact, inventory)]
@@ -316,6 +556,20 @@ def worked_example(
     queries = [query_view(row, gold_by_id[str(row["id"])]) for row in rows]
     split = Counter(values[1] for values in readout.values())
     side = int(size**0.5)
+    walkthrough, derived = deduction(
+        declaration, pins, [universe[index].bits for index in survivors], queries
+    )
+    described = switches(declaration)
+    options = [
+        next(
+            item["meanings"] for item in described["lexical"] if item["feature"] == query["feature"]
+        )
+        if query["task"] == "lexicon"
+        else next(
+            item["values"] for item in described["grammar"] if item["feature"] == query["feature"]
+        )
+        for query in queries
+    ]
     printed = {
         "answer_item": answer["id"],
         "abstain_item": abstain["id"],
@@ -334,6 +588,7 @@ def worked_example(
         "witnesses": ", ".join(queries[1]["witnesses"]),
         "answer_gold": queries[0]["gold"],
         "abstain_gold": queries[1]["gold"],
+        **derived,
     }
     data = {
         "grid": {"side": str(side), "size": count(size), "features": str(len(names))},
@@ -372,6 +627,9 @@ def worked_example(
             for index in survivors
         ],
         "split": {key: count(value) for key, value in sorted(split.items())},
+        "switches": described,
+        "walkthrough": walkthrough,
+        "quiz": [{"options": choices} for choices in options],
         "queries": queries,
         "public_rows": [answer, abstain],
         "gold_rows": [gold_by_id[str(row["id"])] for row in rows],

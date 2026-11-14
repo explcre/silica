@@ -15,6 +15,8 @@ does a model know when the evidence in its prompt determines the answer?**
 [![Data license: CC BY 4.0](https://img.shields.io/badge/data%20license-CC%20BY%204.0-lightgrey)](https://creativecommons.org/licenses/by/4.0/)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
+**In plain words:** SILICA is a set of logic puzzles about made-up languages. Each puzzle gives a rule and a few dictionary clues, then asks one question. The model must decide whether the clues settle the answer: if they do, answer; if they don't, say "can't tell".
+
 <a href="https://explcre.github.io/silica/"><img src="assets/teaser.png" alt="The paper's worked example on the project page: 256 candidate languages are filtered by the published program and three dictionary facts down to 16; the same 16 agree on one query (ANSWER fox) and split 8/8 on the other (ABSTAIN)." width="860"></a>
 
 </div>

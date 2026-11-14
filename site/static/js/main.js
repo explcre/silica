@@ -4,6 +4,7 @@ import { DATA, get } from "./lib.js";
 import { initHero, initStepper } from "./grid.js";
 import { initAblations, initConstant, initConstruction, initControls, initPanel } from "./charts.js";
 import { initUse } from "./viewer.js";
+import { initGlossary, initQuiz, initStart, initWalk } from "./plain.js";
 
 const FILES = ["meta", "example", "construction", "results"];
 
@@ -37,13 +38,19 @@ async function main() {
   }
   bind();
   initHero();
-  window.SILICA_STEPPER = initStepper();
+  initStart();
+  initQuiz();
+  const stepper = initStepper();
+  initWalk();
   initConstant();
   initConstruction();
   initPanel();
   initControls();
   initAblations();
   initUse();
+  initGlossary();
+  // handle for the browser checks: the data and the stepper
+  window.SILICA = { data: DATA, stepper };
   document.documentElement.dataset.ready = "true";
 }
 

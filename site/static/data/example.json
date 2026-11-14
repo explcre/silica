@@ -4411,6 +4411,200 @@
   "subject_initial": "8",
   "verb_initial": "8"
  },
+ "switches": {
+  "count": "8",
+  "values_per_switch": "2",
+  "languages": "256",
+  "lexical": [
+   {
+    "bit": "b0",
+    "feature": "noun_swap_01",
+    "category": "noun",
+    "forms": [
+     "helu",
+     "vuga"
+    ],
+    "meanings": [
+     "fox",
+     "owl"
+    ]
+   },
+   {
+    "bit": "b1",
+    "feature": "noun_swap_23",
+    "category": "noun",
+    "forms": [
+     "kuri",
+     "reze"
+    ],
+    "meanings": [
+     "dog",
+     "bear"
+    ]
+   },
+   {
+    "bit": "b2",
+    "feature": "verb_swap_01",
+    "category": "verb",
+    "forms": [
+     "levu",
+     "bati"
+    ],
+    "meanings": [
+     "see",
+     "help"
+    ]
+   },
+   {
+    "bit": "b3",
+    "feature": "modifier_swap_01",
+    "category": "modifier",
+    "forms": [
+     "pudo",
+     "gisu"
+    ],
+    "meanings": [
+     "red",
+     "blue"
+    ]
+   }
+  ],
+  "grammar": [
+   {
+    "bit": "b4",
+    "feature": "order_family",
+    "values": [
+     "subject_initial",
+     "verb_initial"
+    ]
+   },
+   {
+    "bit": "b5",
+    "feature": "order_variant",
+    "values": [
+     "variant_a",
+     "variant_b"
+    ]
+   },
+   {
+    "bit": "b6",
+    "feature": "alignment",
+    "values": [
+     "nominative_accusative",
+     "ergative_absolutive"
+    ]
+   },
+   {
+    "bit": "b7",
+    "feature": "agreement",
+    "values": [
+     "zero",
+     "agent_number"
+    ]
+   }
+  ]
+ },
+ "walkthrough": {
+  "guard": {
+   "symbolic": "(b3 ⊕ b1 ⊕ b2) ∧ (b3 = b2)",
+   "plain": "(an odd number of b3, b1, b2 are on) and (b3 is the same as b2)",
+   "value": true,
+   "parts": [
+    {
+     "symbolic": "b3 ⊕ b1 ⊕ b2",
+     "plain": "an odd number of b3, b1, b2 are on",
+     "plugged": "an odd number of 0, 1, 0 are on",
+     "on": "1",
+     "of": "3",
+     "value": true
+    },
+    {
+     "symbolic": "b3 = b2",
+     "plain": "b3 is the same as b2",
+     "plugged": "0 is the same as 0",
+     "on": null,
+     "of": null,
+     "value": true
+    }
+   ]
+  },
+  "rules": [
+   {
+    "when_guard": false,
+    "fires": false,
+    "symbolic": "¬((b3 ⊕ b1 ⊕ b2) ∧ (b3 = b2)) ⇒ (ITE(b2, b1, ¬b3) = b4)",
+    "target": "b4",
+    "feature": "order_family",
+    "expression": "(if b2 then b1, otherwise not b3)",
+    "plugged": "(if 0 then 1, otherwise not 0)",
+    "value": true
+   },
+   {
+    "when_guard": true,
+    "fires": true,
+    "symbolic": "((b3 ⊕ b1 ⊕ b2) ∧ (b3 = b2)) ⇒ (ITE(b1, b2, b3) = b0)",
+    "target": "b0",
+    "feature": "noun_swap_01",
+    "expression": "(if b1 then b2, otherwise b3)",
+    "plugged": "(if 1 then 0, otherwise 0)",
+    "value": false,
+    "condition": {
+     "bit": "b1",
+     "value": "1"
+    },
+    "chosen": {
+     "bit": "b2",
+     "value": "0"
+    }
+   }
+  ],
+  "facts": [
+   {
+    "bit": "b3",
+    "feature": "modifier_swap_01",
+    "value": "0"
+   },
+   {
+    "bit": "b2",
+    "feature": "verb_swap_01",
+    "value": "0"
+   },
+   {
+    "bit": "b1",
+    "feature": "noun_swap_23",
+    "value": "1"
+   }
+  ],
+  "forced": {
+   "bit": "b0",
+   "value": "0",
+   "form": "helu",
+   "meaning": "fox",
+   "support": "fox 16/16"
+  },
+  "free": {
+   "bit": "b4",
+   "feature": "order_family",
+   "split": {
+    "subject_initial": "8",
+    "verb_initial": "8"
+   }
+  }
+ },
+ "quiz": [
+  {
+   "options": [
+    "fox",
+    "owl"
+   ]
+  },
+  {
+   "options": [
+    "subject_initial",
+    "verb_initial"
+   ]
+  }
+ ],
  "queries": [
   {
    "id": "silica-d8de6e0dbb2c8bd57d7c8bd9",

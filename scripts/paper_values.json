@@ -896,6 +896,30 @@
         "answer": null
       },
       "where": "Appendix B"
+    },
+    "guard_fires": {
+      "value": "true",
+      "where": "Figure 5 caption (the guard fires)"
+    },
+    "constant_feature": {
+      "value": "noun_swap_01",
+      "where": "Figure 5 caption (noun_swap_01 is constant)"
+    },
+    "constant_column": {
+      "value": "b0",
+      "where": "Appendix L (column b0 is 0 in all sixteen rows)"
+    },
+    "constant_value": {
+      "value": "0",
+      "where": "Appendix L (column b0 is 0 in all sixteen rows)"
+    },
+    "free_feature": {
+      "value": "order_family",
+      "where": "Figure 5 caption (order_family stays free and splits 8/8)"
+    },
+    "split_column": {
+      "value": "b4",
+      "where": "Appendix L (column b4 carries eight zeros and eight ones)"
     }
   }
 }

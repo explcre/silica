@@ -161,7 +161,8 @@ export function initHero() {
     stage = next;
     grid.update(stage);
     count.textContent = ex.counts[stage];
-    label.textContent = stage === 0 ? "candidate languages" : `compatible after ${names[stage]}`;
+    label.textContent =
+      stage === 0 ? "possible languages" : stage === 1 ? "left after the rule" : `left after the clue ${names[stage]}`;
     figure.dataset.state = String(stage);
   }
   function tick() {
@@ -407,7 +408,7 @@ function fillPrompt() {
 }
 
 /** Draw a strip of the compatible languages, coloured by one query's answer. */
-function strip(queryIndex) {
+export function strip(queryIndex) {
   const ex = DATA.example;
   const survivors = ex.survivors;
   const size = 18;
