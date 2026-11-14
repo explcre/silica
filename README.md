@@ -9,13 +9,13 @@ determines the answer (`ANSWER`, with the canonical payload) or not
 state is queried two ways with opposite correct actions, so a model scores
 above a constant policy only by consulting the evidence.
 
-This repository is the code release of the paper *SILICA: Certified
-Counterfactual Evaluation of Identifiability in Unseen-Language Induction*
+This repository is the code release of the paper [*SILICA: Certified
+Counterfactual Evaluation of Identifiability in Unseen-Language Induction*](https://pengcheng-xu.com/files/SILICA_EACL2027_Findings.pdf)
 (Findings of EACL 2027): the generator, the dataset verifier and an
 independent clean-room oracle, the prompt renderer, the strict response
 parser and evaluator, the shortcut audits, and the script that reproduces
 every table of the paper. The dataset and every model response analyzed in
-the paper are on the Hugging Face Hub at `explcre/silica`.
+the paper are on the Hugging Face Hub at [`ryan1025-x/silica`](https://huggingface.co/datasets/ryan1025-x/silica).
 
 ## Install
 
@@ -32,7 +32,7 @@ The learned-probe audits need scikit-learn: install the `audit` extra
 
 ```bash
 pip install huggingface_hub
-hf download explcre/silica --repo-type dataset --local-dir silica-data
+hf download ryan1025-x/silica --repo-type dataset --local-dir silica-data
 
 # checksums, every certificate recomputed, every row solved from its prompt
 silica verify --dataset silica-data --output verify.json

@@ -8,6 +8,7 @@ authors:
   - family-names: Guan
     given-names: Xinyu
 repository-code: "https://github.com/explcre/silica"
+url: "https://huggingface.co/datasets/ryan1025-x/silica"
 license: Apache-2.0
 keywords:
   - benchmark
@@ -26,3 +27,4 @@ preferred-citation:
   publisher:
     name: Association for Computational Linguistics
   year: 2027
+  url: "https://pengcheng-xu.com/files/SILICA_EACL2027_Findings.pdf"
