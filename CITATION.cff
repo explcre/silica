@@ -7,7 +7,7 @@ authors:
     given-names: Pengcheng
   - family-names: Guan
     given-names: Xinyu
-repository-code: "https://github.com/TO-CONFIRM/silica"
+repository-code: "https://github.com/explcre/silica"
 license: Apache-2.0
 keywords:
   - benchmark

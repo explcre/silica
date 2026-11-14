@@ -15,14 +15,14 @@ Counterfactual Evaluation of Identifiability in Unseen-Language Induction*
 independent clean-room oracle, the prompt renderer, the strict response
 parser and evaluator, the shortcut audits, and the script that reproduces
 every table of the paper. The dataset and every model response analyzed in
-the paper are on the Hugging Face Hub at `TO-CONFIRM/silica`.
+the paper are on the Hugging Face Hub at `explcre/silica`.
 
 ## Install
 
 Python 3.10 or newer; the core package has no dependencies.
 
 ```bash
-pip install "silica-bench @ git+https://github.com/TO-CONFIRM/silica"
+pip install "silica-bench @ git+https://github.com/explcre/silica"
 ```
 
 The learned-probe audits need scikit-learn: install the `audit` extra
@@ -32,7 +32,7 @@ The learned-probe audits need scikit-learn: install the `audit` extra
 
 ```bash
 pip install huggingface_hub
-hf download TO-CONFIRM/silica --repo-type dataset --local-dir silica-data
+hf download explcre/silica --repo-type dataset --local-dir silica-data
 
 # checksums, every certificate recomputed, every row solved from its prompt
 silica verify --dataset silica-data --output verify.json
